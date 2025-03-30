@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./backend:/var/www/backend
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
